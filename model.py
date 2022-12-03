@@ -28,17 +28,18 @@ def dymics():
 
 
 def kinematics(starting_speed):
-    time_interval = np.arange(0,1,step=0.05)
-    print(time_interval)
+    time_interval = np.arange(0,1,step=0.001)
 
     def spaceX(t):
         return starting_speed * cos(angle) * t
 
     def spaceY(t):
-        return shot_h+starting_speed*sin(angle)*t - ((g*(t**2))/2)
+        return shot_h+starting_speed*sin(angle)*t - 0.5*g*(t**2)
 
-    xs = np.array(list(map(spaceX,time_interval)))
-    ys = np.array(list(map(spaceY,time_interval)))
+    ys = list(map(spaceY,time_interval))
+    ys = [n for n in ys if n>0]
+    xs = list(map(spaceX,time_interval))
+    xs = xs[:len(ys)]
     plt.plot(xs,ys)
     plt.show()
 
