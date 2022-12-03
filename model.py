@@ -29,18 +29,12 @@ def dynamics():
 
 
 def kinematics(starting_speed):
-<<<<<<< HEAD
     time_interval = np.arange(0,1,step=0.001)
-=======
-    time_interval = np.arange(0, 1, step=0.001)
-    print(time_interval)
->>>>>>> 618e26a0d7c966c558b0d052b5edcb62db3ab715
 
     def spaceX(t):
         return starting_speed * cos(angle) * t
 
     def spaceY(t):
-<<<<<<< HEAD
         return shot_h+starting_speed*sin(angle)*t - 0.5*g*(t**2)
 
     ys = list(map(spaceY,time_interval))
@@ -48,15 +42,6 @@ def kinematics(starting_speed):
     xs = list(map(spaceX,time_interval))
     xs = xs[:len(ys)]
     plt.plot(xs,ys)
-=======
-        return shot_h + starting_speed * sin(angle) * t - ((g * (t ** 2)) / 2)
-
-    y = list(map(spaceY, time_interval))
-    ys = [n for n in y if n >= 0]
-    x = list(map(spaceX, time_interval))
-    xs = x[:len(ys)]
-    plt.plot(xs, ys)
->>>>>>> 618e26a0d7c966c558b0d052b5edcb62db3ab715
     plt.show()
 
 
