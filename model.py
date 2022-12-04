@@ -1,31 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt, cos, sin, pi
-import argparse
+from tkinter import *
+from tkinter import messagebox
 
-# учесть ситуацию со слишком большим весом
-# интерфейс?
 
 # определение констант
 g = 9.80665
-k = 380.653  # коэф. сжатия резинки
+k = 475.32  # коэф. сжатия резинки
 spoon_weight = 0.06
-bullet_weight = 0.04504  # дефолт - 0. задавать на инпуте
 loaded_h = 0.14
 shot_h = 0.2
 delta_x = 0.05
-angle = 30 * pi / 180  # перевод в радианы
+angle = pi / 3 # в радианах
 
-
-def consoleParser():
-    parser = argparse.ArgumentParser(description='Args:')
-    parser.add_argument("-weight", type=float, help="Weight of a bullet in kg.", default=0.04504)
-    return parser.parse_args()
+starting_speed = 0 
+bullet_weight = 0 #0.04504
 
 
 def dynamics():
-    return sqrt((k * (delta_x ** 2) - 2 * (spoon_weight + bullet_weight) * g * (shot_h - loaded_h)) /
-                (2 * spoon_weight + bullet_weight))
+    return sqrt((k * (delta_x ** 2) - 2 * (spoon_weight + bullet_weight) * g * (shot_h - loaded_h)) / 
+        (2 * spoon_weight + bullet_weight))
 
 
 def kinematics(starting_speed):
@@ -45,9 +40,66 @@ def kinematics(starting_speed):
     plt.show()
 
 
+
+def main():
+    def isValidWeight():
+        if bullet_weight>0.94:
+            messagebox.showinfo("Ошибка", "Слишком большое значение массы!")
+            return False
+        if bullet_weight < 0:
+            messagebox.showinfo("Ошибка", "Отрицательное значение массы!")
+            return False
+        return True
+
+
+    def updateData():
+        if (txt_inp.get()==""):
+            messagebox.showinfo("Пустое поле", "Введите значение массы!")
+            return False
+        global bullet_weight,starting_speed
+        try:
+            bullet_weight = float(txt_inp.get())
+        except ValueError:
+            bullet_weight =0 
+            messagebox.showinfo("Ошибка", "Некорректное значение массы!")
+            return False
+        if not isValidWeight(): return False
+        starting_speed = dynamics()
+        return True
+
+
+    def dyn_clicked():
+        if updateData():
+            lbl_speed.configure(text="Начальная скорость при заданных\nпараметрах массы равна: {:.3f} м/с".format(starting_speed),state="active")
+
+        
+    def kin_clicked():
+        if updateData():
+            kinematics(starting_speed)
+            if (lbl_speed.cget("text")!=""):
+                dyn_clicked()
+
+
+    window = Tk()   
+    window.title("Mechanical system model")
+
+    lbl = Label(window,text="Введите значение массы груза в килограммах: ",font=("Arial Bold",15))
+    lbl.grid(column=0, row=0)
+    lbl_speed = Label(window, font=("Arial Bold",15),state="disabled")
+    lbl_speed.place(x=200,y=30)
+
+    txt_inp = Entry(window,width=10,font=("Arial Bold",15))
+    txt_inp.grid(column=1,row=0)
+    txt_inp.focus()
+
+    btn_dyn = Button(window, text="Динамический\nрасчёт",font=("Arial Bold",15),command=dyn_clicked)
+    btn_dyn.place(x=5,y=30)
+    btn_kin = Button(window, text="Кинематичесий\nрасчёт",font=("Arial Bold",15),command=kin_clicked)
+    btn_kin.place(x=5,y=100)
+
+    window.geometry("560x170")
+    window.mainloop()
+
+
 if __name__ == "__main__":
-    args = consoleParser()
-    bullet_weight = args.weight
-    starting_speed = dynamics()
-    kinematics(starting_speed)
-    print(starting_speed)
+    main()
