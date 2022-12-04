@@ -8,13 +8,13 @@ import argparse
 
 # определение констант
 g = 9.80665
-k = 380.653  # коэф. сжатия резинки
+k = 475.32  # коэф. сжатия резинки
 spoon_weight = 0.06
 bullet_weight = 0.04504  # дефолт - 0. задавать на инпуте
 loaded_h = 0.14
 shot_h = 0.2
 delta_x = 0.05
-angle = 30 * pi / 180  # перевод в радианы
+angle = pi / 3 # в радианах
 
 
 def consoleParser():
