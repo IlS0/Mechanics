@@ -81,19 +81,17 @@ if __name__ == "__main__":
     def kin_clicked():
         if updateData():
             kinematics()
-            if (lbl_speed["text"]!=""):
-                dyn_clicked()
 
 
     def close():
         plt.ion()
         plt.close("all")
-        window.quit()
         window.destroy()
-       
+
 
     window = Tk()   
     window.title("Mechanical system model")
+    window.geometry("560x170")
 
     lbl = Label(window,text="Введите значение массы груза в килограммах: ",font=("Arial Bold",15))
     lbl.grid(column=0, row=0)
@@ -109,6 +107,5 @@ if __name__ == "__main__":
     btn_kin = Button(window, text="Кинематичесий\nрасчёт",font=("Arial Bold",15),command=kin_clicked)
     btn_kin.place(x=5,y=100)
 
-    window.geometry("560x170")
     window.protocol("WM_DELETE_WINDOW",close)
     window.mainloop()
