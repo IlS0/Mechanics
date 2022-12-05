@@ -1,11 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt, cos, sin, pi
-from tkinter import *
-from tkinter import messagebox
 
 
-# определение констант
+#определение констант
 g = 9.80665
 k = 475.32  # коэф. сжатия резинки
 spoon_weight = 0.06
@@ -14,8 +12,9 @@ shot_h = 0.2
 delta_x = 0.05
 angle = pi / 3 # в радианах
 
+#изменяемые величины
 starting_speed = 0 
-bullet_weight = 0 #0.04504
+bullet_weight = 0
 
 
 def dynamics():
@@ -23,7 +22,7 @@ def dynamics():
         (2 * spoon_weight + bullet_weight))
 
 
-def kinematics(starting_speed):
+def kinematics():
     time_interval = np.arange(0,1,step=0.001)
 
     def spaceX(t):
@@ -37,17 +36,23 @@ def kinematics(starting_speed):
     xs = list(map(spaceX,time_interval))
     xs = xs[:len(ys)]
     plt.plot(xs,ys)
+    plt.grid()
+    plt.title("График траектории полёта снаряда")
+    plt.xlabel('Расстояние, x (м)')
+    plt.ylabel('Расстояние, y (м)')
     plt.show()
 
 
+if __name__ == "__main__":
+    from tkinter import *
+    from tkinter import messagebox
 
-def main():
     def isValidWeight():
         if bullet_weight>0.94:
             messagebox.showinfo("Ошибка", "Слишком большое значение массы!")
             return False
-        if bullet_weight < 0:
-            messagebox.showinfo("Ошибка", "Отрицательное значение массы!")
+        if bullet_weight <= 0:
+            messagebox.showinfo("Ошибка", "Отрицательное или нулевое значение массы!")
             return False
         return True
 
@@ -75,10 +80,17 @@ def main():
         
     def kin_clicked():
         if updateData():
-            kinematics(starting_speed)
-            if (lbl_speed.cget("text")!=""):
+            kinematics()
+            if (lbl_speed["text"]!=""):
                 dyn_clicked()
 
+
+    def close():
+        plt.ion()
+        plt.close("all")
+        window.quit()
+        window.destroy()
+       
 
     window = Tk()   
     window.title("Mechanical system model")
@@ -98,8 +110,5 @@ def main():
     btn_kin.place(x=5,y=100)
 
     window.geometry("560x170")
+    window.protocol("WM_DELETE_WINDOW",close)
     window.mainloop()
-
-
-if __name__ == "__main__":
-    main()
