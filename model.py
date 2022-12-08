@@ -4,7 +4,7 @@ from math import sqrt, cos, sin, pi
 
 # определение констант
 g = 9.80665
-k = 475.32  # коэф. сжатия резинки
+k = 432.83  # коэф. сжатия резинки
 spoon_weight = 0.06
 loaded_h = 0.14
 shot_h = 0.2
