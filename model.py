@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
 
     def isValidWeight():
-        if bullet_weight > 0.94:
+        if bullet_weight > 0.85:
             messagebox.showinfo("Ошибка", "Слишком большое значение массы!")
             return False
         if bullet_weight <= 0:
